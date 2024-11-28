@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Team Feedback Application</title>
+    <link rel="stylesheet" href="styles.css" />
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <h3>Team Feedback Application</h3>
+      <nav>
+        <ul>
+          <li><a href="#home">Home</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a href="#feedback">Feedback</a></li>
+          <li><a href="#help">Help</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <section id="home" class="centered">
+      <div class="home-container">
+        <h2>Welcome to the Team Feedback Application</h2>
+        <p>
+          User Feedback Application designed to collect feedback, suggestions,
+          and complaints from users in a secure and anonymous manner. The
+          application will facilitate user submissions while ensuring the the
+          appropriate notifications are sent to both the users and the group
+          administrator.
+        </p>
+        <button class="feedback-btn" onclick="goToFeedback()">
+          Go to Feedback
+        </button>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="about-container">
+        <h2>What is the Application About?</h2>
+        <p>
+          The primary goal of the TFA is to create a seamless platform for users
+          to submit their feedback, suggestions, and complaints in a secure and
+          anonymous manner. The application allows users to communicate their
+          thoughts and experience effectively while ensuring that their identies
+          are protected, thus fostering an environment of open and honest
+          communication.
+        </p>
+        <br />
+        <strong>Key Objectives:</strong>
+        <br />
+        <ol>
+          <li>
+            <strong>User-Centric Design:</strong> The application aims to
+            prioritize the user experience, making it easy to submit feedback
+            without any barriers. The interface will be intuitive and user
+            friendly, encouraging participation from all users.
+          </li>
+          <li>
+            <strong>Feedback Collection:</strong> The TFA will enable users to
+            share different types of feedback, including:
+            <ul>
+              <li>
+                <strong>Suggestions</strong>: Ideas for improvement or new
+                features that users would like to see.
+              </li>
+              <li>
+                <strong>Complaints:</strong>: Issues users have encountered that
+                require attention and resolution.
+              </li>
+              <li>
+                <strong>General feedback</strong>: Comments on the overall
+                experience with the application or service.
+              </li>
+            </ul>
+          </li>
+          <li>
+            <strong>Anonymous Submissions</strong>: To ensure users feel
+            comfortable providing honest feedback, the UFA will allow for
+            anonymous submissions. Users will not be required to provide
+            personally identifiable information, thus maintaining their privacy
+            and encouraging candid communication.
+          </li>
+          <li>
+            <strong>Real-Time Notification</strong>: Both users and
+            administrators will recieve timely notifications regarding feedback
+            submissions. Once a user submits feedback, an acknowledgement
+            notification will be sent to them, confirming that their feedback
+            has been received. Administrators will also be notified of new
+            submissions, ensuring comments are reviewed promptly.
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section id="feedback" class="centered">
+      <h2>Feedback Form</h2>
+
+      <form
+        id="feedbackForm"
+        onsubmit="return handleSubmit(event)"
+        action="process_form.php"
+        method="POST"
+        enctype="multipart/form-data"
+      >
+        <div class="form-group">
+          <label class="checkbox-label">
+            <input
+              type="checkbox"
+              id="anonymousCheckbox"
+              name="is_anonymous"
+              onchange="toggleNameSelection()"
+            />
+            Submit anonymously
+          </label>
+        </div>
+
+        <div class="form-group" id="nameSelectContainer">
+          <label for="nameSelect">Select Your Name:</label>
+          <select id="nameSelect" name="user_details" required>
+            <option value="">Select your name</option>
+            <option
+              value='{"name":"Nolwazi Mlonzi","email":"nmlonzi@techgirlshub.co.za"}'
+            >
+              Nolwazi Mlonzi
+            </option>
+            <option
+              value='{"name":"Nkosingiphile Mbhele","email":"nmbhele@techgirlshub.co.za"}'
+            >
+              Nkosingiphile Mbhele
+            </option>
+            <option
+              value='{"name":"Vuyelwa Mavuma","email":"vmavuma@techgirlshub.co.za"}'
+            >
+              Vuyelwa Mavuma
+            </option>
+            <option
+              value='{"name":"Nolwazi Ngcongo","email":"nngcongo@techgirlshub.co.za"}'
+            >
+              Nolwazi Ngcongo
+            </option>
+
+            <option
+              value='{"name":"Thembelihle Masilela","email":"tmasilela@techgirlshub.co.za"}'
+            >
+              Thembelihle Masilela
+            </option>
+            <option
+              value='{"name":"Audrey Mateke","email":"amateke@techgirlshub.co.za"}'
+            >
+              Audrey Mateke
+            </option>
+            <option
+              value='{"name":"Lutendo Malema","email":"lutendomalema@techgirlshub.co.za"}'
+            >
+              Lutendo Malema
+            </option>
+            <option
+              value='{"name":"Palesa Motaung","email":"pmotaung@techgirlshub.co.za"}'
+            >
+              Palesa Motaung
+            </option>
+            <option
+              value='{"name":"Mbali Cele","email":"mcele@techgirlshub.co.za"}'
+            >
+              Mbali Cele
+            </option>
+          </select>
+          <div class="error-message" id="nameSelectError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="comment"
+            >Comment (request, query, complaint): <span class="required"></span
+          ></label>
+          <textarea
+            id="comment"
+            name="comment"
+            required
+            minlength="10"
+            maxlength="1000"
+          ></textarea>
+          <div class="char-counter" id="commentCounter">0/1000 characters</div>
+          <div class="error-message" id="commentError"></div>
+        </div>
+
+        <div class="form-group">
+          <label for="attachments">Attachment(s) (Optional):</label>
+          <input
+            type="file"
+            id="attachments"
+            name="attachments[]"
+            multiple
+            accept=".jpg,.jpeg,.png,.pdf,.docx"
+            data-max-size="5242880"
+          />
+          <div class="file-info">
+            Allowed files: Images (.jpg, .png), Documents (.pdf, .docx)<br />
+            Maximum file size: 5MB per file
+          </div>
+          <div class="error-message" id="fileError"></div>
+          <div id="fileList" class="file-list"></div>
+        </div>
+
+        <div class="form-group">
+          <button type="submit" id="submitButton">Submit Feedback</button>
+        </div>
+      </form>
+    </section>
+
+    <section id="help" class="centered">
+      <h2>Help</h2>
+      <br />
+      <p>
+        Need Assistance?
+        <br />
+        Contact the group administrator for any queries at
+        <strong>admin@techgirlshub.co.za</strong>
+      </p>
+    </section>
+
+    <footer>
+      <div class="footer-top">
+        <div class="footer-left">
+          <a href="#home">Home</a> | <a href="#about">About</a> |
+          <a href="#help">Help</a>
+        </div>
+        <div>
+          <p>Credit to : Nkosingiphile Mbhele at Techgirlshub</p>
+        </div>
+        <div class="footer-right">
+          <a
+            href="https://github.com/techgirlshub"
+            target="_blank"
+            class="social-icon"
+          >
+            <i class="fab fa-github"></i>
+          </a>
+          <a
+            href="https://www.techgirlshub.co.za"
+            target="_blank"
+            class="social-icon"
+          >
+            <i class="fas fa-globe"></i>
+          </a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2024 Team Feedback Application</p>
+      </div>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
